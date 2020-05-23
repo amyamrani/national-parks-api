@@ -60,4 +60,4 @@ function watchForm() {
     });
   }
   
-  $(watchForm);
+$(watchForm);
