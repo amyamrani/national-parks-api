@@ -1,0 +1,51 @@
+* {
+    box-sizing: border-box;
+}
+  
+body {
+    font-family: 'Roboto', sans-serif;
+}
+  
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+  
+  
+input {
+    padding: 6px; 
+    font-size: 14px; 
+}
+
+#search-term {
+    width: 300px;
+}
+
+label, #max-results {
+    display: inline-block;
+}
+
+#max-results {
+    width: 100px;
+}
+
+button { 
+    font-weight: bold;
+    background-color: blue;
+    color: white;
+    border-radius: 8px;
+    padding: 5px 10px;
+}
+
+.results-search {
+    margin-top: 20px;
+}
+
+#results-list > li > div {
+    margin-top: 20px;
+}
+  
+.hidden {
+    display: none;
+ }
+  
