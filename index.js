@@ -58,6 +58,6 @@ function watchForm() {
         const maxResults = $('#js-max-results').val();
         getParkData(searchState, maxResults);
     });
-  }
+}
   
 $(watchForm);
