@@ -1,43 +1,62 @@
 'use strict';
 
-function getParkData() {
-    const searchTerm = $('#search-term').val();
-    const selectedState = $('#state').val();
-    const maxResults = $('#max-results').val();
+const apiKey = 'piMhpMv6eWvWP9lbVqIEeUR7tptkchVButHK15fi';
+const baseURL = 'https://developer.nps.gov/api/v1/parks';
+
+function formatQueryParams (params) {
+    const queryItems = Object.keys(params)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    return queryItems.join('&');    
+}
+
+function displayResults(responseJson) {
+    if (responseJson.data.length == 0) {
+        $('#results-list').text('No results found.');
+    }
+    
+    for (let i = 0; i < responseJson.data.length; i++) {
+        const park = responseJson.data[i];
+        const address = park.addresses[0];
+        $('#results-list').append(
+            `<li>
+                <h3><a href="${park.url}">${park.fullName}</a></h3>
+                <p>Address: ${address.line1} ${address.line2} ${address.line3}${address.city}, ${address.stateCode} ${address.postalCode}</p>
+                <p>${park.description}</p>
+            </li>`            
+        )
+    };
+    $('#results').removeClass('hidden');            
+};
+
+function getParkData(searchState, maxResults) {
+    const params = {
+        stateCode: searchState,
+        limit: maxResults 
+    }
+    const queryString = formatQueryParams(params)
+    const url = baseURL + '?' + queryString + '&api_key=' + apiKey;
+
     $('#results-list').empty();
-    fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${selectedState}&limit=${maxResults}&q=${searchTerm}&api_key=piMhpMv6eWvWP9lbVqIEeUR7tptkchVButHK15fi`)
+
+    fetch(url)
     .then(response => {
         if (response.ok) {
             return response.json();
         }   
-        throw new Error(resonse.statusText);
+        throw new Error(response.statusText);
     })     
     .then(responseJson => displayResults(responseJson))
     .catch(err => {
-        $('#error-message').text(`Something went wrong. ${err.message}`);
+        $('#js-error-message').text(`Something went wrong. ${err.message}`);
     });    
 }
 
-function displayResults(responseJson) {
-    
-    responseJson.data.forEach(park => {
-        $('#results-list').append(
-            `<li>
-                <div><strong>Name: </strong>${park.fullName}</div>
-                <div><strong>Description: </strong>${park.description}</div>
-                <div><strong>Website: </strong><a href='${park.url}' target='blank'>${park.url}</a></div>
-                <div><strong>Address: </strong>${park.addresses[1].line1} ${park.addresses[1].city}, ${park.addresses[1].stateCode} ${park.addresses[1].postalCode}</div>
-            </li>`
-        )
-    });
-    $('#results').removeClass('hidden');
-}
-
-
 function watchForm() {
-    $('form').submit(event => {
-      event.preventDefault();
-        getParkData();
+    $('.js-form').submit(event => {
+        event.preventDefault();
+        const searchState = $('#js-search-term').val();
+        const maxResults = $('#js-max-results').val();
+        getParkData(searchState, maxResults);
     });
   }
   

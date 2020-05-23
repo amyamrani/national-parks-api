@@ -11,22 +11,18 @@ body {
     margin: 0 auto;
 }
   
-  
 input {
     padding: 6px; 
     font-size: 14px; 
 }
 
-#search-term {
-    width: 300px;
+#js-search-term {
+    width: 250px;
+    margin-top: 10px;
 }
 
-label, #max-results {
-    display: inline-block;
-}
-
-#max-results {
-    width: 100px;
+#js-max-results {
+    width: 75px;
 }
 
 button { 
@@ -35,17 +31,18 @@ button {
     color: white;
     border-radius: 8px;
     padding: 5px 10px;
+    height: 30px;
+    font-size: 14px;
 }
 
 .results-search {
     margin-top: 20px;
 }
 
-#results-list > li > div {
-    margin-top: 20px;
+#js-error-message {
+    color: red;
 }
   
 .hidden {
     display: none;
  }
-  
